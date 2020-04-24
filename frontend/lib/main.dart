@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'models/global.dart';
 
@@ -26,10 +28,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  static double _minHeight = 300;
-  static double _maxHeight = 800;
+  static double minHeight = 300;
+  static double maxHeight = 400;
   bool _isExtended = false;
-  Offset _offset = Offset(0, _minHeight);
+  Offset _offset = Offset(0, minHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +41,23 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           GestureDetector (
             onPanUpdate: (details) {
-              _offset = Offset(0, _offset.dy - details.delta.dy);
-              if (_offset.dy < _MyHomePageState._minHeight) {
-                _offset = Offset(0, _MyHomePageState._minHeight);
+              print(_offset.dy);
+              print(_MyHomePageState.maxHeight);
+              _offset = Offset(0, _offset.dy + details.delta.dy);
+              if (_offset.dy < _MyHomePageState.minHeight) {
+                _offset = Offset(0, _MyHomePageState.minHeight);
                 _isExtended = false;
-              } else if (_offset.dy > _MyHomePageState._maxHeight) {
-                _offset = Offset(0, _MyHomePageState._maxHeight);
+              } else if (_offset.dy > _MyHomePageState.maxHeight) {
+                _offset = Offset(0, _MyHomePageState.maxHeight);
                 _isExtended = true;
               }
               setState(() {});
             },
             child: AnimatedContainer (
               duration: Duration.zero,
-              height: _minHeight,
-              alignment: Alignment.topCenter,
+              curve: Curves.easeOut,
+              height: _offset.dy,
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: blueColor,
                 boxShadow: [

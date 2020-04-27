@@ -20,7 +20,7 @@ class ToDo extends StatelessWidget {
         right: 10
       ),
       decoration: BoxDecoration (
-        color: Colors.green,
+        color: Colors.white,
         boxShadow: [
 					BoxShadow(
             color: Colors.grey,
@@ -54,11 +54,6 @@ class ToDo extends StatelessWidget {
             ),
             child: Text('3 Subtasks'),
           ),
-          Row(
-            children: <Widget>[
-              
-            ],
-          )
         ],
       ) 
     );

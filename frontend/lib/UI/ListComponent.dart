@@ -10,7 +10,7 @@ class ListComponent extends StatefulWidget {
 }
   
 class _ListComponentState extends State<ListComponent> {
-  List<ToDo> toDoList = [];
+  List<Task> toDoList = [];
   @override
   Widget build(BuildContext context) {
     toDoList = getList();
@@ -21,7 +21,7 @@ class _ListComponentState extends State<ListComponent> {
         itemCount: toDoList.length,
         itemBuilder: (context, i) {
           return ListTile (
-            title: toDoList[i],
+            title: ToDo(taskName: toDoList[i].title),
           );
         }
 
@@ -29,10 +29,10 @@ class _ListComponentState extends State<ListComponent> {
     );
   }
 
-  List <Widget> getList() {
+  List <Task> getList() {
 
     for (int i = 0; i < 5; i++) {
-      toDoList.add(ToDo(keyValue: i.toString(), taskName: "Data Structures Assignment " + i.toString()));
+      toDoList.add(Task('Assignment' + (i+10).toString(), false, i.toString()));
     }
     return toDoList;
   }

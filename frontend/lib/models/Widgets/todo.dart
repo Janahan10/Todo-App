@@ -11,7 +11,6 @@ class ToDo extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return Container (
-      key: Key(keyValue),
       height: 108,
       width: 345,
       margin: EdgeInsets.only(

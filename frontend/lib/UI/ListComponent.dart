@@ -32,7 +32,7 @@ class _ListComponentState extends State<ListComponent> {
   List <Task> getList() {
 
     for (int i = 0; i < 5; i++) {
-      toDoList.add(Task('Assignment' + (i+10).toString(), false, i.toString()));
+      toDoList.add(Task('Assignment' + (i + 10).toString(), false, i.toString()));
     }
     return toDoList;
   }

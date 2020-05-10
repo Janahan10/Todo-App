@@ -14,18 +14,26 @@ class UserResource(Resource):
         user = User.query.filter_by(username = json_data['username']).first()
         if user:
             return {'message' : "User already exist"}, 400
-        
+        user = User.query.filter_by(email = json_data['email']).first()
+        if user:
+            return {'message' : "Email already used by another user"}, 400
+        # create new user object
         user = User (
             username = json_data['username'],
             password = json_data['password'],
             first_name = json_data['firstname'],
             last_name = json_data['lastname'],
+            email = json_data['email']
         )
 
+        # add user to database
         db.session.add(user)
         db.session.commit()
 
-        return {'status' : "succes", 'data' : user}, 201
+        # convert User object to string before return data
+        result = User.serialize(user)
+
+        return {'status' : "succes", 'data' : result}, 201
 
     def get(self):
         users = User.query.all()

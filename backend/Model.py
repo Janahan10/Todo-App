@@ -14,14 +14,14 @@ class User(db.Model):
     password = db.Column(db.String())
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
-    email_address = db.Column(db.String())
+    email = db.Column(db.String())
 
     def __init__(self, username, password, first_name, last_name, email):
         self.username = username
         self.password = password
         self.first_name = first_name
         self.last_name = last_name
-        self.email_addres = email
+        self.email = email
 
     def __repr__(self):
         return '<id {}'.formate(self.id)
@@ -32,7 +32,7 @@ class User(db.Model):
             'password' :self.password,
             'firstname' : self.first_name,
             'lastname' : self.last_name,
-            'email_address' : self.email_address
+            'email' : self.email
         }
 
 

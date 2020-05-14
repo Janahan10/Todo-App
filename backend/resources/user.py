@@ -1,6 +1,8 @@
 from flask import request
 from flask_restful import Resource
 from Model import User, db
+import random
+import string
 
 class UserResource(Resource):
 
@@ -17,8 +19,15 @@ class UserResource(Resource):
         user = User.query.filter_by(email = json_data['email']).first()
         if user:
             return {'message' : "Email already used by another user"}, 400
+        
+        key = self.generate_key()
+        user = User.query.filter_by(api_key = key).first()
+        if user: 
+            return {'message' : "API key already exist"}
+
         # create new user object
         user = User (
+            api_key = key,
             username = json_data['username'],
             password = json_data['password'],
             first_name = json_data['firstname'],
@@ -33,7 +42,11 @@ class UserResource(Resource):
         # convert User object to string before return data
         result = User.serialize(user)
 
-        return {'status' : "succes", 'data' : result}, 201
+        return {'status' : "success", 'data' : result}, 201
+
+    def generate_key(self):
+        return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(21))
+
 
     def get(self):
         users = User.query.all()

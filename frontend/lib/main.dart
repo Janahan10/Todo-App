@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/UI/ListComponent.dart';
-import 'models/global.dart';
-import 'UI/ListComponent.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:frontend/classes/user.dart';
+import 'package:frontend/blocs/userBloc.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -14,69 +15,40 @@ class MyApp extends StatelessWidget {
 			theme: ThemeData(
 				primarySwatch: Colors.blue,
 			),
-			home: MyHomePage(),
+			home: LoginScreen(),
 		);
 	}
 }
 
-class MyHomePage extends StatefulWidget {
-	MyHomePage({Key key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _LoginScreenState();
+}
+  
+class _LoginScreenState extends State<LoginScreen> {
+  UserBloc _user;
 
-	@override
-	_MyHomePageState createState() => _MyHomePageState();
+  @override
+  void initState() {
+    super.initState();
+    _user = UserBloc();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _user.registerUser("username", "password123", "firstname", "lastname", "email@emailers.com");
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Login Page"),
+      ),
+      body: Center(
+        child: Text('Login Page Flutter Firebase  Content'),
+      ),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
-	static double minHeight = 300;
-	static double maxHeight = 450;
-	bool _isExtended = false;
-	Offset _offset = Offset(0, minHeight);
-
-	@override
-	Widget build(BuildContext context) {
-		return Scaffold(
-			body: Stack(
-				alignment: Alignment.topCenter,
-				children: <Widget>[
-					ListComponent(),
-					GestureDetector (
-						onPanUpdate: (details) {
-							print(_offset.dy);
-							print(_MyHomePageState.maxHeight);
-							_offset = Offset(0, _offset.dy + details.delta.dy);
-							if (_offset.dy < _MyHomePageState.minHeight) {
-								_offset = Offset(0, _MyHomePageState.minHeight);
-								_isExtended = false;
-							} else if (_offset.dy > _MyHomePageState.maxHeight) {
-								_offset = Offset(0, _MyHomePageState.maxHeight);
-								_isExtended = true;
-							}
-							setState(() {});
-						},
-						child: AnimatedContainer (
-							duration: Duration.zero,
-							curve: Curves.easeOut,
-							height: _offset.dy,
-							alignment: Alignment.center,
-							decoration: BoxDecoration(
-								color: blueColor,
-								boxShadow: [
-									BoxShadow(color: Colors.grey.withOpacity(1),
-										spreadRadius: 5, 
-										blurRadius: 10,
-									),
-								],
-								borderRadius: BorderRadius.only(
-									bottomLeft: Radius.circular(30),
-									bottomRight: Radius.circular(30),
-								),
-							),
-						),
-					),
-				],
-			),
-		);
-	}
-}
-	
+Future getApiKey() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance(); 
+    return await prefs.getString("API_Token");
+ }

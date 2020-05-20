@@ -16,6 +16,7 @@ class UserResource(Resource):
         user = User.query.filter_by(username = json_data['username']).first()
         if user:
             return {'message' : "User already exist"}, 400
+            
         user = User.query.filter_by(email = json_data['email']).first()
         if user:
             return {'message' : "Email already used by another user"}, 400

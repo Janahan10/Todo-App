@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/UI/SignupScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/classes/user.dart';
 import 'package:frontend/blocs/userBloc.dart';
@@ -113,7 +114,11 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text("Don't have an account?"),
-                FlatButton (onPressed: () {}, child: Text("Sign Up"))
+                FlatButton (onPressed: () {
+                  Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => SignupScreen()),
+                  );
+                }, child: Text("Sign Up"))
               ],
             )
           ],

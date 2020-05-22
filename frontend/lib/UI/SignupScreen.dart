@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:frontend/classes/user.dart';
 import 'package:frontend/blocs/userBloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/UI/LoginScreen.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -117,7 +118,11 @@ class _SignupScreenState extends State<SignupScreen> {
               children: <Widget>[
                 Text("Already have an account?"),
                 FlatButton (
-                  onPressed: () {}, 
+                  onPressed: () {
+                    Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  }, 
                   child: Text("Login"))
               ],
             )

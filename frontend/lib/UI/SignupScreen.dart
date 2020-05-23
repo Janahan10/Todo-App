@@ -19,11 +19,14 @@ class _SignupScreenState extends State<SignupScreen> {
     _user = UserBloc();
   }
 
+  final _formkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    _user.registerUser("userna323123me", "password123", "firstname", "lastname", "email@ghasdks.com");
+    //_user.registerUser("userna323123me", "password123", "firstname", "lastname", "email@ghasdks.com");
+    
     return Scaffold(
-      //backgroundColor: Colors.grey,
+      backgroundColor: Colors.lightBlueAccent,
       body: Center(
         child: SingleChildScrollView(
         child: Column(
@@ -86,30 +89,68 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               child: Column(
                 children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "First Name"),
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Last Name"),
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Email"),
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Username"),
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Password"),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(border: Border.all(width: 1.25, color: Colors.black) ),
-                    width: double.infinity,
-                    margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                    child: FlatButton(
-                      onPressed: () {}, 
-                      child: Text("Signup")
-                    ),
-                  ),
+                  Form (
+                    key: _formkey,
+                    child: Column (
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(labelText: "First Name"),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "First name is Required";
+                          }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(labelText: "Last Name"),
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(labelText: "Email"),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Email is Required";
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(labelText: "Username"),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Username is Required";
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(labelText: "Password"),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Password is Required";
+                            }
+                            return null;
+                          },
+                        ),
+                        Container(
+                          decoration: BoxDecoration(border: Border.all(width: 1.25, color: Colors.black) ),
+                          width: double.infinity,
+                          margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                          child: FlatButton(
+                            onPressed: () {
+                              if(_formkey.currentState.validate()) {
+                                Scaffold.of(context).showSnackBar(SnackBar(content: Text('Processing Data')));
+                              }
+                            }, 
+                            child: Text("Signup")
+                          ),
+                        ),
+                      ],
+                    )
+                  )
                 ],
               ),
             ),

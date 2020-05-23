@@ -18,18 +18,20 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     _user = UserBloc();
   }
+  
+  final _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     _user.registerUser("userna323123me", "password123", "firstname", "lastname", "email@ghasdks.com");
     return Scaffold(
-      //backgroundColor: Colors.grey,
-      body: Center(
+      backgroundColor: Colors.lightBlueAccent,
+      body: Center (
+        child: SingleChildScrollView(
         child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container (
-              margin: EdgeInsets.only(bottom: 50.0, top: 75.0),
+              margin: EdgeInsets.only(bottom: 50.0, top: 20.0),
               padding: const EdgeInsets.fromLTRB(50, 25, 50, 25),
               decoration: BoxDecoration (
                 color: Colors.white,
@@ -85,21 +87,47 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               child: Column(
                 children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Username / Email"),
+                  Form(
+                    key: _formkey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center, 
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: InputDecoration(labelText: "Username / Email"),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Username / Email is Required";
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(labelText: "Password"),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Password is Required";
+                            }
+                            return null;
+                          },
+                          obscureText: true,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(border: Border.all(width: 1.25, color: Colors.black) ),
+                          width: double.infinity,
+                          margin: EdgeInsets.only(top: 20.0),
+                          child: FlatButton(
+                            onPressed: () {
+                              if(_formkey.currentState.validate()) {
+                                Scaffold.of(context).showSnackBar(SnackBar(content: Text('Processing Data')));
+                              }
+                            }, 
+                            child: Text("Login")
+                          ),
+                        ),
+                      ],
+                    )
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Password"),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(border: Border.all(width: 1.25, color: Colors.black) ),
-                    width: double.infinity,
-                    margin: EdgeInsets.only(top: 20.0),
-                    child: FlatButton(
-                      onPressed: () {}, 
-                      child: Text("Login")
-                    ),
-                  ),
+
                   Container(
                     alignment: Alignment.centerRight,
                     child: FlatButton(
@@ -124,6 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       ),
+      )
     );
   }
 }

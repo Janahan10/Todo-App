@@ -11,8 +11,16 @@ class SignupScreen extends StatefulWidget {
 }
   
 class _SignupScreenState extends State<SignupScreen> {
-  UserBloc _user;
 
+  TextEditingController firstNameController = new TextEditingController();
+  TextEditingController lastNameController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController usernameController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
+  
+
+  UserBloc _user;
+  User user;
   @override
   void initState() {
     super.initState();
@@ -23,7 +31,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //_user.registerUser("userna323123me", "password123", "firstname", "lastname", "email@ghasdks.com");
     
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
@@ -95,6 +102,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         TextFormField(
+                          controller: firstNameController,
                           decoration: InputDecoration(labelText: "First Name"),
                           validator: (value) {
                             if (value.isEmpty) {
@@ -104,9 +112,11 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                         ),
                         TextFormField(
+                          controller: lastNameController,
                           decoration: InputDecoration(labelText: "Last Name"),
                         ),
                         TextFormField(
+                          controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(labelText: "Email"),
                           validator: (value) {
@@ -117,6 +127,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                         ),
                         TextFormField(
+                          controller: usernameController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(labelText: "Username"),
                           validator: (value) {
@@ -127,6 +138,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           },
                         ),
                         TextFormField(
+                          controller: passwordController,
                           decoration: InputDecoration(labelText: "Password"),
                           validator: (value) {
                             if (value.isEmpty) {
@@ -134,6 +146,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             }
                             return null;
                           },
+                          obscureText: true,
                         ),
                         Container(
                           decoration: BoxDecoration(border: Border.all(width: 1.25, color: Colors.black) ),
@@ -142,8 +155,18 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: FlatButton(
                             onPressed: () {
                               if(_formkey.currentState.validate()) {
-                                Scaffold.of(context).showSnackBar(SnackBar(content: Text('Processing Data')));
+                                user = _user.registerUser(
+                                  usernameController.text, 
+                                  passwordController.text, 
+                                  firstNameController.text, 
+                                  lastNameController.text, 
+                                  emailController.text
+                                );
                               }
+                              if (user != null) {
+                                saveApiKey(user);
+                              }
+                              
                             }, 
                             child: Text("Signup")
                           ),
@@ -173,9 +196,11 @@ class _SignupScreenState extends State<SignupScreen> {
       )
     );
   }
+
+  void saveApiKey(User user) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('api_key', user.apiKey);
+  }
 }
 
-Future getApiKey() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance(); 
-    return await prefs.getString("API_Token");
- }
+

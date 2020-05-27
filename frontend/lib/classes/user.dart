@@ -4,13 +4,15 @@ class User {
   String firstname;
   String lastname;
   String email;
+  String apiKey;
 
   User({
     this.username,
     this.password,
     this.firstname,
     this.lastname,
-    this.email
+    this.email,
+    this.apiKey
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -19,7 +21,8 @@ class User {
       password : json['password'],
       firstname : json['firstname'],
       lastname : json['lastname'],
-      email : json['email']
+      email : json['email'],
+      apiKey: json['api_key']
     );
   }
 
@@ -30,6 +33,7 @@ class User {
     data['firstname'] = this.firstname;
     data['lastname'] = this.lastname;
     data['email'] = this.email;
+    data["api_key"] = this.apiKey;
     return data;
   }
 }
